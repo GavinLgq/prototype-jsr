@@ -1,8 +1,8 @@
 name: Deploy to GitHub Pages
 
 on:
-  push:
-    branches: [main]
+  # Dijalankan manual saja. Aktifkan kembali trigger push setelah Pages
+  # dinyalakan di Settings > Pages > Source: GitHub Actions.
   workflow_dispatch:
 
 permissions:

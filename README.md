@@ -59,17 +59,27 @@ server melakukan fallback ke `index.html` (Apache: `.htaccess` dengan
 `FallbackResource /index.html`). Atau pakai `npm run build:static` yang tidak
 butuh konfigurasi server sama sekali.
 
+## Satu file HTML mandiri
+
+```bash
+npm run build:single   # menghasilkan jsr-prototype.html (~402 KB)
+```
+
+Semua CSS dan JS di-inline, favicon jadi data URI, nol permintaan jaringan.
+File-nya bisa di-double-click, dikirim lewat WhatsApp atau email, dan dibuka
+dari flashdisk tanpa server apa pun. Route memakai hash (`#/kajian`).
+
+Dua hal yang membuatnya jalan dari `file://`: bundel dibangun sebagai IIFE
+(bukan ES module, yang ditolak browser dari `file://`) dan di-inline sebelum
+`</body>`, bukan di `<head>`, karena tanpa `type="module"` script kehilangan
+sifat defer dan akan jalan sebelum `#root` ada.
+
 ## GitHub Pages
 
-Push ke `main` memicu `.github/workflows/deploy.yml`: build + `npm run smoke`,
-lalu `npm run build:static` yang di-deploy ke Pages.
-
-**Langkah sekali saja:** buka **Settings > Pages > Source: GitHub Actions**.
-Tanpa itu langkah `configure-pages` gagal, karena `GITHUB_TOKEN` bawaan tidak
-punya hak admin untuk menyalakan Pages sendiri.
-
-URL hasilnya memakai subpath (`/prototype-jsr/`), jadi route tampil sebagai
-`/prototype-jsr/#/kajian` mengikuti hash routing dari build static.
+Workflow `.github/workflows/deploy.yml` ada tapi trigger push-nya dimatikan,
+karena Pages belum diaktifkan di repo. Untuk memakainya: **Settings > Pages >
+Source: GitHub Actions**, lalu kembalikan `push: branches: [main]` di bagian
+`on:`.
 
 ## Akun demo
 
