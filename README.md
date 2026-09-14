@@ -59,6 +59,18 @@ server melakukan fallback ke `index.html` (Apache: `.htaccess` dengan
 `FallbackResource /index.html`). Atau pakai `npm run build:static` yang tidak
 butuh konfigurasi server sama sekali.
 
+## GitHub Pages
+
+Push ke `main` memicu `.github/workflows/deploy.yml`: build + `npm run smoke`,
+lalu `npm run build:static` yang di-deploy ke Pages.
+
+**Langkah sekali saja:** buka **Settings > Pages > Source: GitHub Actions**.
+Tanpa itu langkah `configure-pages` gagal, karena `GITHUB_TOKEN` bawaan tidak
+punya hak admin untuk menyalakan Pages sendiri.
+
+URL hasilnya memakai subpath (`/prototype-jsr/`), jadi route tampil sebagai
+`/prototype-jsr/#/kajian` mengikuti hash routing dari build static.
+
 ## Akun demo
 
 | Email            | Kata sandi | Peran          | Bisa mengakses                 |
