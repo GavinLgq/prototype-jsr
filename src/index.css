@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+@theme {
+  --color-jsr-50: #eefaf4;
+  --color-jsr-100: #d6f2e4;
+  --color-jsr-200: #b0e5cd;
+  --color-jsr-300: #7ed3b0;
+  --color-jsr-400: #4dba87;
+  --color-jsr-500: #2ea06e;
+  --color-jsr-600: #1f8159;
+  --color-jsr-700: #1a6749;
+  --color-jsr-800: #17523c;
+  --color-jsr-900: #0b3d2c;
+
+  --color-sand-50: #faf8f3;
+  --color-sand-100: #f3eee2;
+  --color-sand-200: #e7dfcb;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-white font-sans text-jsr-900 antialiased;
+  }
+  ::selection {
+    background: var(--color-jsr-200);
+  }
+}
+
+@utility container-jsr {
+  @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
+}
+
+@utility card {
+  @apply rounded-2xl border border-jsr-100 bg-white;
+  box-shadow:
+    0 1px 2px rgba(11, 61, 44, 0.04),
+    0 8px 24px -12px rgba(11, 61, 44, 0.15);
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-colors;
+  @apply disabled:pointer-events-none disabled:opacity-50;
+}
+
+@utility btn-primary {
+  @apply btn bg-jsr-600 text-white hover:bg-jsr-700;
+}
+
+@utility btn-ghost {
+  @apply btn border border-jsr-200 text-jsr-700 hover:bg-jsr-50;
+}
+
+@utility btn-wa {
+  @apply btn bg-[#25D366] text-white hover:bg-[#1fb857];
+}
+
+@utility chip {
+  @apply inline-flex items-center gap-1 rounded-full bg-jsr-50 px-3 py-1 text-xs font-medium text-jsr-700;
+}
+
+@utility input {
+  @apply w-full rounded-xl border border-jsr-200 bg-white px-4 py-2.5 text-sm outline-none;
+  @apply placeholder:text-jsr-900/35 focus:border-jsr-400 focus:ring-2 focus:ring-jsr-100;
+}
+
+@utility label {
+  @apply mb-1.5 block text-sm font-medium text-jsr-800;
+}
+
+@utility noise-bg {
+  background-image:
+    radial-gradient(60% 60% at 15% 10%, rgba(77, 186, 135, 0.2), transparent 60%),
+    radial-gradient(50% 50% at 90% 0%, rgba(46, 160, 110, 0.16), transparent 60%);
+}
