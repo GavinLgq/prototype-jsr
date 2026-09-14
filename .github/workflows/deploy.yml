@@ -1,0 +1,61 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Satu deploy berjalan pada satu waktu; push baru membatalkan antrean lama.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      # Build biasa dipakai untuk smoke test, karena test-nya menelusuri
+      # path asli (/kajian) yang hanya ada di mode BrowserRouter.
+      - name: Build & smoke test
+        run: |
+          npm run build
+          npm run smoke
+
+      # Yang di-deploy adalah build static: path relatif + hash routing,
+      # supaya jalan di subpath /prototype-jsr/ tanpa konfigurasi server.
+      - name: Build static bundle
+        run: |
+          npm run build:static
+          touch dist/.nojekyll
+
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
